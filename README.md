@@ -301,61 +301,159 @@ GROUP BY C.id, C.nombre, C.apellido1,C.apellido2;
 ```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/5ac8105c-5a9f-445c-8f00-91f3e3f89e15)
 
-##
-##
-```sql```
+## Devuelve un listado con el identificador de cliente, nombre y apellidos y el número total de pedidos que ha realizado cada uno de clientes durante el año 2017.
+```sql
+SELECT C.id,C.nombre,C.apellido1,C.apellido2,COUNT(P.id) AS total_pedidos 
+FROM cliente C
+LEFT JOIN pedido P ON P.id_cliente = C.id
+WHERE EXTRACT(YEAR FROM fecha) = 2017
+GROUP BY C.id, C.nombre, C.apellido1,C.apellido2;
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/ad8b0b05-1025-4ca6-8053-9b40d9bb4bd0)
-##
-```sql```
+
+## Devuelve un listado que muestre el identificador de cliente, nombre, primer apellido 
+## y el valor de la máxima cantidad del pedido realizado por cada uno de los clientes. 
+## El resultado debe mostrar aquellos clientes que no han realizado ningún pedido indicando que la máxima cantidad de sus pedidos realizados es 0. 
+## Puede hacer uso de la función IFNULL.
+```sql
+select * from cliente;
+SELECT C.id,C.nombre,C.apellido1,C.apellido2,MAX(P.total) AS maxima_cantidad_pedido
+FROM cliente C
+LEFT JOIN pedido P ON P.id_cliente = C.id
+GROUP BY C.id,C.nombre,C.apellido1,C.apellido2
+;
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/54039861-4fa8-4d06-82c9-9fc210d88ee3)
 
-##
-```sql```
+## Devuelve cuál ha sido el pedido de máximo valor que se ha realizado cada año.
+```sql
+SELECT pedido.*
+FROM pedido
+JOIN (
+    SELECT EXTRACT(YEAR FROM fecha) AS año, MAX(total) AS maximo_valor
+    FROM pedido
+    GROUP BY EXTRACT(YEAR FROM fecha)
+) AS maximos_por_año
+ON pedido.total = maximos_por_año.maximo_valor
+AND EXTRACT(YEAR FROM pedido.fecha) = maximos_por_año.año;
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/59b294d5-c4ae-4c1f-b6a1-071d7d3490c2)
 
-##
-```sql```
+## Devuelve un listado con todos los pedidos que ha realizado Adela Salas Díaz. (Sin utilizar INNER JOIN).
+```sql
+SELECT * FROM pedido
+WHERE id_cliente = (
+    SELECT id FROM cliente
+    WHERE nombre = 'Adela Salas Díaz' OR id = 4
+);
+
+```
+## Devuelve el número de pedidos en los que ha participado el comercial Daniel Sáez Vega. (Sin utilizar INNER JOIN)
+```sql
+SELECT * FROM pedido
+WHERE id_comercial = (
+	SELECT id FROM comercial
+	WHERE nombre ='Daniel' OR apellido1 = 'Sáez' OR apellido2= 'Vega' OR id = 1
+);
+/*Devuelve los datos del cliente que realizó el pedido más caro en el año 2019. (Sin utilizar INNER JOIN)*/
+SELECT * FROM cliente 
+WHERE id = (
+    SELECT id_cliente FROM pedido
+    WHERE total = (
+        SELECT MAX(total)
+        FROM pedido
+        WHERE EXTRACT(YEAR FROM fecha) = 2019
+    )
+    AND EXTRACT(YEAR FROM fecha) = 2019
+);
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/114ab601-1939-4754-93c7-07df84f28410)
 
-##
-```sql```
+## Devuelve la fecha y la cantidad del pedido de menor valor realizado por el cliente Pepe Ruiz Santana.
+```sql
+SELECT fecha, MIN(total) AS menor_pedido FROM pedido
+WHERE id_cliente = 8 GROUP BY fecha;
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/4144514e-9cf3-4a35-90b8-60f4cc82ca36)
 
-##
-```sql```
+## *Devuelve un listado con los datos de los clientes y los pedidos,de todos los clientes que han realizado un pedido durante el año 2017 con un valor mayor o igual al valor medio de los pedidos realizados durante ese mismo año.
+```sql
+SELECT C.*, P.*FROM cliente C 
+JOIN pedido P ON P.id_cliente = C.id
+WHERE EXTRACT(YEAR FROM P.fecha) = 2017 
+AND P.total >= (
+    SELECT AVG(total)
+    FROM pedido
+    WHERE EXTRACT(YEAR FROM fecha) = 2017
+);
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/fe6c0f21-c12f-4c2b-b7cd-061d08683283)
 
-##
-```sql```
+## *Devuelve un listado de los clientes que no han realizado ningún pedido. (Utilizando ANY o ALL).
+```sql
+select * from pedido;
+SELECT *
+FROM cliente AS c1
+WHERE c1.id NOT IN (
+    SELECT id_cliente
+    FROM pedido
+);
+
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/87999ec0-bcfa-4868-843b-805ea8cfb54f)
 
-##
-```sql```
+## Devuelve un listado de los comerciales que no han realizado ningún pedido. (Utilizando ANY o ALL).
+```sql
+SELECT *
+FROM comercial AS c1
+WHERE c1.id NOT IN (
+    SELECT id_comercial
+    FROM pedido
+);
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/462f8d96-95e3-4a03-b7e3-9c0466c4a8a5)
 
-##
-```sql```
+## *Devuelve un listado de los clientes que no han realizado ningún pedido. (Utilizando IN o NOT IN).
+```sql
+SELECT *
+FROM cliente AS c1
+WHERE c1.id NOT IN (
+    SELECT id_cliente
+    FROM pedido
+);
+```
 ##
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/5a131a78-4b54-4f4d-9af5-334d4a4e6cd2)
 
-##
-```sql```
-##
+## Devuelve un listado de los comerciales que no han realizado ningún pedido. (Utilizando IN o NOT IN).*/
+```sql
+SELECT *
+FROM comercial AS c1
+WHERE c1.id NOT IN (
+    SELECT id_comercial
+    FROM pedido
+);
+
+```
+## *Devuelve un listado de los clientes que no han realizado ningún pedido. (Utilizando EXISTS o NOT EXISTS).
+
+```sql
+SELECT *FROM cliente AS c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM pedido AS p
+    WHERE p.id_cliente = c.id
+);
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/a9b54733-8d43-4f72-ae70-551ac934a044)
 
-```sql```
-##
-```sql```
-##
-```sql```
-##
+## Devuelve un listado de los comerciales que no han realizado ningún pedido. (Utilizando EXISTS o NOT EXISTS)
+```sql
+SELECT * FROM comercial AS CO
+WHERE NOT EXISTS (
+	SELECT 1
+	FROM pedido AS p 
+	WHERE p.id_comercial = CO.id
+);
+```
 
-##
-```sql```
-##
-```sql```
-##
-```sql```
-##
-```sql```
-##
