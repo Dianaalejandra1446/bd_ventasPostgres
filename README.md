@@ -387,7 +387,7 @@ AND P.total >= (
     WHERE EXTRACT(YEAR FROM fecha) = 2017
 );
 ```
-![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/fe6c0f21-c12f-4c2b-b7cd-061d08683283)
+![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/0d99533c-4de0-4fa7-a087-8b70088957e9)
 
 ## *Devuelve un listado de los clientes que no han realizado ningún pedido. (Utilizando ANY o ALL).
 ```sql
@@ -398,9 +398,9 @@ WHERE c1.id NOT IN (
     SELECT id_cliente
     FROM pedido
 );
+![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/ef5503b2-8d9e-421e-a226-19bde96d085d)
 
 ```
-![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/87999ec0-bcfa-4868-843b-805ea8cfb54f)
 
 ## Devuelve un listado de los comerciales que no han realizado ningún pedido. (Utilizando ANY o ALL).
 ```sql
@@ -411,7 +411,7 @@ WHERE c1.id NOT IN (
     FROM pedido
 );
 ```
-![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/462f8d96-95e3-4a03-b7e3-9c0466c4a8a5)
+![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/bf431284-7b70-4af3-a0d0-af36fcb93846)
 
 ## *Devuelve un listado de los clientes que no han realizado ningún pedido. (Utilizando IN o NOT IN).
 ```sql
@@ -422,8 +422,9 @@ WHERE c1.id NOT IN (
     FROM pedido
 );
 ```
+![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/39edb42e-e85a-45a9-a1ba-ac589b6ead36)
+
 ##
-![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/5a131a78-4b54-4f4d-9af5-334d4a4e6cd2)
 
 ## Devuelve un listado de los comerciales que no han realizado ningún pedido. (Utilizando IN o NOT IN).*/
 ```sql
@@ -433,6 +434,7 @@ WHERE c1.id NOT IN (
     SELECT id_comercial
     FROM pedido
 );
+![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/87381097-32f9-4419-830f-44b824989195)
 
 ```
 ## *Devuelve un listado de los clientes que no han realizado ningún pedido. (Utilizando EXISTS o NOT EXISTS).
@@ -445,7 +447,7 @@ WHERE NOT EXISTS (
     WHERE p.id_cliente = c.id
 );
 ```
-![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/a9b54733-8d43-4f72-ae70-551ac934a044)
+![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/e32ad78c-e765-4a9f-b4cf-4b7dac6ca103)
 
 ## Devuelve un listado de los comerciales que no han realizado ningún pedido. (Utilizando EXISTS o NOT EXISTS)
 ```sql
@@ -456,4 +458,6 @@ WHERE NOT EXISTS (
 	WHERE p.id_comercial = CO.id
 );
 ```
+![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/24793680-816f-4f72-acef-9829c4651e8a)
+
 
