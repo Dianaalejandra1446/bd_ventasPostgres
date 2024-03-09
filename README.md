@@ -8,6 +8,7 @@ Devuelve un listado con todos los pedidos que se han realizado. Los pedidos debe
 
 ```sql
 SELECT * FROM pedido ORDER BY fecha ASC;
+```
 ![image](https://github.com/Dianaalejandra1446/bd_ventasPostgres/assets/139186201/14bbe3ea-e9a6-4e3a-ac31-c4dcaba6f1ec)
 
 
